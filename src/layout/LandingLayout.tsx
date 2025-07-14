@@ -1,20 +1,15 @@
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Navbar from "../components/Navbar";
-import AutoBreadcrumbs from "../components/AutoBreadCrumbs";
 
-type MainLayoutProps = {
+type LandingLayoutProps = {
   children: React.ReactNode;
 };
 
-const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
+const LandingLayout: React.FC<LandingLayoutProps> = ({ children }) => {
   return (
     <>
       <Navbar />
-      <Box sx={{ px: 3, mt: 2 }}>
-        <AutoBreadcrumbs />
-      </Box>
-
       <Box
         component="main"
         sx={{ bgcolor: "background.default", minHeight: "calc(100dvh - 64px)" }}
@@ -25,4 +20,4 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
   );
 };
 
-export default MainLayout;
+export default LandingLayout;

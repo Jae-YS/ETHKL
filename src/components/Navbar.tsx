@@ -7,19 +7,14 @@ import {
   IconButton,
   Badge,
 } from "@mui/material";
-import { useTheme } from "@mui/material/styles";
 import { Link } from "react-router-dom";
-import useCategoriesQuery from "../hooks/useCategoriesQuery";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { useAuth0 } from "@auth0/auth0-react";
-import type { Category } from "../types/Category";
+import NavLinkButton from "./NavLinkButton";
+import { STATIC_CATEGORIES } from "../constants/Categories";
 
 const Navbar = () => {
-  const theme = useTheme();
-
-  const { data: categories = [], isLoading, isError } = useCategoriesQuery();
-
   const { loginWithRedirect, logout, isAuthenticated } = useAuth0();
 
   const handleLogin = async () => {
@@ -34,79 +29,99 @@ const Navbar = () => {
       position="sticky"
       elevation={0}
       sx={{
-        backgroundColor: theme.palette.background.default,
-        color: theme.palette.text.primary,
+        backgroundColor: "background.default",
+        color: "text.primary",
         height: "64px",
+
         justifyContent: "center",
-        borderBottom: `1px solid ${theme.palette.grey[100]}`,
+        borderBottom: `1px solid rgba(0, 0, 0, 0.3)`,
       }}
     >
       <Toolbar
+        disableGutters
         sx={{
-          display: "flex",
           minHeight: "64px",
-          px: { xs: 2, md: 4 },
-          justifyContent: "space-between",
+          px: { xs: 2, md: 3 },
         }}
       >
-        <Typography variant="h6" fontWeight={600}>
-          <Link to="/" style={{ textDecoration: "none", color: "inherit" }}>
-            ETHKL
-          </Link>
-        </Typography>
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            width: "100%",
+            maxWidth: "1440px",
+            mx: "auto",
+          }}
+        >
+          <Typography
+            variant="h6"
+            sx={{
+              fontWeight: 700,
+              fontSize: "1.5rem",
+              letterSpacing: "0.05em",
+              cursor: "pointer",
+              mr: 3,
+            }}
+          >
+            <Link to="/" style={{ textDecoration: "none", color: "inherit" }}>
+              ETHKL
+            </Link>
+          </Typography>
 
-        <Box sx={{ display: "flex", alignItems: "center" }}>
-          <Button component={Link} to="/shop" color="inherit" sx={{ mr: 2 }}>
-            Shop
-          </Button>
-
-          {!isLoading &&
-            !isError &&
-            categories.map((cat: Category) => (
-              <Button
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              gap: { xs: 2, md: 3 },
+              flexShrink: 1,
+            }}
+          >
+            {STATIC_CATEGORIES.map((cat) => (
+              <NavLinkButton
                 key={cat.id}
-                component={Link}
                 to={`/category/${cat.id}`}
-                color="inherit"
-                sx={{ textTransform: "none", mr: 2 }}
-              >
-                {cat.name}
-              </Button>
+                label={cat.name}
+              />
             ))}
-        </Box>
+          </Box>
 
-        {/* RIGHT: Cart + Auth */}
-        <Box sx={{ display: "flex", alignItems: "center" }}>
-          <IconButton component={Link} to="/cart" sx={{ mr: 2 }}>
-            <Badge badgeContent={0} color="primary">
-              <ShoppingCartIcon />
-            </Badge>
-          </IconButton>
+          <Box sx={{ display: "flex", alignItems: "center", gap: 1.5, ml: 2 }}>
+            <IconButton component={Link} to="/cart">
+              <Badge badgeContent={0} color="primary">
+                <ShoppingCartIcon />
+              </Badge>
+            </IconButton>
 
-          {isAuthenticated ? (
-            <>
-              <IconButton component={Link} to="/profile" sx={{ mr: 1 }}>
-                <AccountCircleIcon />
-              </IconButton>
-              <Button onClick={() => logout()} sx={{ textTransform: "none" }}>
-                Logout
+            {isAuthenticated ? (
+              <>
+                <IconButton component={Link} to="/profile">
+                  <AccountCircleIcon />
+                </IconButton>
+                <Button onClick={() => logout()} sx={{ textTransform: "none" }}>
+                  Logout
+                </Button>
+              </>
+            ) : (
+              <Button
+                onClick={handleLogin}
+                variant="contained"
+                sx={{
+                  backgroundColor: "primary.main",
+                  color: "primary.contrastText",
+                  px: 2.5,
+                  py: 1,
+                  borderRadius: 2,
+                  fontWeight: 500,
+                  "&:hover": {
+                    backgroundColor: "#914D2F",
+                  },
+                }}
+              >
+                Log In
               </Button>
-            </>
-          ) : (
-            <Button
-              onClick={handleLogin}
-              variant="contained"
-              sx={{
-                backgroundColor: theme.palette.primary.main,
-                color: theme.palette.primary.contrastText,
-                "&:hover": {
-                  backgroundColor: "#914D2F",
-                },
-              }}
-            >
-              Log In
-            </Button>
-          )}
+            )}
+          </Box>
         </Box>
       </Toolbar>
     </AppBar>

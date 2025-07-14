@@ -1,12 +1,17 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import DotLoader from "react-spinners/DotLoader";
 import { Alert, Box, Container, Typography } from "@mui/material";
+import { useUIContext } from "../context/loader/useUIContext";
 
 const CallbackPage: React.FC = () => {
   const { isAuthenticated, isLoading, error } = useAuth0();
   const navigate = useNavigate();
+  const { setIsAppLoading } = useUIContext();
+
+  useEffect(() => {
+    setIsAppLoading(isLoading);
+  }, [isLoading, setIsAppLoading]);
 
   useEffect(() => {
     if (!isLoading && isAuthenticated) {
@@ -39,19 +44,7 @@ const CallbackPage: React.FC = () => {
     );
   }
 
-  return (
-    <Box
-      sx={{
-        minHeight: "100vh",
-        bgcolor: "background.default",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-      }}
-    >
-      <DotLoader size={80} color="#A85E3B" />
-    </Box>
-  );
+  return null;
 };
 
 export default CallbackPage;
