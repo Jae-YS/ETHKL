@@ -1,5 +1,5 @@
 import React from "react";
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import AuthenticationGuard from "./guards/AuthenticationGuard";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -7,6 +7,8 @@ import LandingPage from "./pages/LandingPage";
 import NotFoundPage from "./pages/NotFoundPage";
 import { useUIContext } from "./context/ui/useUIContext";
 import { Box } from "@mui/material";
+import { useMediaQuery } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
 import DotLoader from "react-spinners/DotLoader";
 import ProductsPage from "./pages/ProductPage";
 import CartPage from "./pages/CartPage";
@@ -33,11 +35,25 @@ const GlobalLoaderOverlay = () => (
 
 const App: React.FC = () => {
   const { isAppLoading } = useUIContext();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   return (
     <>
-      <ToastContainer position="bottom-right" autoClose={3000} />
-
+      <ToastContainer
+        position={isMobile ? "top-center" : "bottom-right"}
+        autoClose={3000}
+        limit={3}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+        style={isMobile ? { width: "90%", margin: "0 auto", left: "5%" } : {}}
+      />
       {isAppLoading && <GlobalLoaderOverlay />}
 
       <Routes>
@@ -52,7 +68,8 @@ const App: React.FC = () => {
           path="/cart"
           element={<AuthenticationGuard component={CartPage} />}
         />
-        <Route path="*" element={<NotFoundPage />} />
+        <Route path="/404" element={<NotFoundPage />} />
+        <Route path="*" element={<Navigate to="/404" replace />} />
       </Routes>
     </>
   );

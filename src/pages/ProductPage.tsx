@@ -55,8 +55,8 @@ const ProductsPage: React.FC = () => {
           backgroundColor: "background.default",
           display: "flex",
           flexDirection: "column",
-          px: 3,
-          py: 4,
+          px: { xs: 2, md: 3 },
+          py: { xs: 3, md: 4 },
         }}
       >
         <Typography
@@ -67,6 +67,11 @@ const ProductsPage: React.FC = () => {
             color: "text.primary",
             textTransform: "uppercase",
             textAlign: "center",
+            fontSize: {
+              xs: "1.75rem",
+              sm: "2rem",
+              md: "2.5rem",
+            },
           }}
         >
           {pageTitle}
@@ -96,7 +101,7 @@ const ProductsPage: React.FC = () => {
                 md: "repeat(3, 1fr)",
                 lg: "repeat(4, 1fr)",
               },
-              columnGap: 4,
+              columnGap: 3,
               rowGap: 4,
             }}
           >
@@ -111,12 +116,12 @@ const ProductsPage: React.FC = () => {
             variant="contained"
             color="primary"
             sx={{
-              px: 4,
+              px: { xs: 3, sm: 4 },
               py: 1.5,
               fontSize: "1rem",
               fontWeight: 500,
               textTransform: "none",
-              width: "fit-content",
+              width: { xs: "100%", sm: "fit-content" },
               mx: "auto",
               mt: 4,
               borderRadius: 2,

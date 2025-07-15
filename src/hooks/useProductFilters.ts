@@ -14,15 +14,11 @@ export const useFilteredProducts = (
       result = result.filter((p) => p.category?.name === category);
     }
 
-    if (
-      filters?.minPrice !== undefined &&
-      filters?.maxPrice !== undefined &&
-      filters.minPrice !== null &&
-      filters.maxPrice !== null
-    ) {
-      result = result.filter(
-        (p) => p.price >= filters.minPrice! && p.price <= filters.maxPrice!
-      );
+    const min = filters?.minPrice ?? 0;
+    const max = filters?.maxPrice ?? Infinity;
+
+    if (filters?.minPrice !== undefined || filters?.maxPrice !== undefined) {
+      result = result.filter((p) => p.price >= min && p.price <= max);
     }
 
     switch (filters?.sortBy) {

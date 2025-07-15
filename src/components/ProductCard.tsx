@@ -1,9 +1,12 @@
-import { Box, CardMedia, Typography } from "@mui/material";
+import { Box, CardMedia, Typography, useMediaQuery } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import type { Product } from "../types/Product";
+import { useTheme } from "@mui/material/styles";
 
 const ProductCard = ({ product }: { product: Product }) => {
   const navigate = useNavigate();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   return (
     <Box
@@ -38,32 +41,37 @@ const ProductCard = ({ product }: { product: Product }) => {
             height: "100%",
             objectFit: "contain",
             backgroundColor: "background.default",
+            transition: "transform 0.3s ease",
+            "&:hover": {
+              transform: "scale(1.03)",
+            },
           }}
         />
 
-        <Box
-          className="view"
-          sx={{
-            position: "absolute",
-            bottom: 0,
-            left: 0,
-            width: "100%",
-            height: "40px",
-            backgroundColor: "primary.main",
-            color: "primary.contrastText",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            fontSize: "0.9rem",
-            fontWeight: 500,
-            textTransform: "uppercase",
-            transform: "translateY(100%)",
-            transition: "transform 0.3s ease-in-out",
-            cursor: "pointer",
-          }}
-        >
-          View
-        </Box>
+        {!isMobile && (
+          <Box
+            className="view"
+            sx={{
+              position: "absolute",
+              bottom: 0,
+              left: 0,
+              width: "100%",
+              height: 40,
+              backgroundColor: "primary.main",
+              color: "primary.contrastText",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              fontSize: "0.875rem",
+              fontWeight: 600,
+              textTransform: "uppercase",
+              transform: "translateY(100%)",
+              transition: "transform 0.3s ease-in-out",
+            }}
+          >
+            View
+          </Box>
+        )}
       </Box>
 
       <Box sx={{ px: 0.5 }}>
@@ -71,7 +79,7 @@ const ProductCard = ({ product }: { product: Product }) => {
           variant="body1"
           sx={{
             fontWeight: 400,
-            fontSize: "0.95rem",
+            fontSize: { xs: "0.95rem", sm: "1rem" },
             color: "text.primary",
           }}
         >
@@ -83,6 +91,7 @@ const ProductCard = ({ product }: { product: Product }) => {
           sx={{
             fontWeight: 500,
             color: "error.main",
+            fontSize: { xs: "0.9rem", sm: "0.95rem" },
             mt: 0.5,
           }}
         >

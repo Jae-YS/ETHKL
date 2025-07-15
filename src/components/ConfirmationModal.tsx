@@ -6,7 +6,9 @@ import {
   Button,
   Typography,
   Box,
+  useMediaQuery,
 } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
 
 type Props = {
   open: boolean;
@@ -23,32 +25,58 @@ const ConfirmationModal = ({
   productTitle,
   price,
 }: Props) => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+
   return (
     <Dialog
       open={open}
       onClose={onClose}
+      fullScreen={isMobile}
+      maxWidth="xs"
+      fullWidth
       slotProps={{
         paper: {
           sx: {
-            borderRadius: 3,
-            px: 2,
-            py: 2,
+            borderRadius: isMobile ? 0 : 2,
+            display: "flex",
+            flexDirection: "column",
+            p: 2,
+            boxShadow: 6,
           },
         },
       }}
     >
-      <DialogTitle sx={{ fontWeight: 600, fontSize: "1.5rem" }}>
+      <DialogTitle
+        sx={{
+          fontWeight: 700,
+          fontSize: { xs: "1.5rem", sm: "1.25rem" },
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          pb: 1,
+        }}
+      >
         Confirm Purchase
       </DialogTitle>
-
-      <DialogContent>
-        <Typography sx={{ fontSize: "1rem", color: "text.primary" }}>
+      <DialogContent sx={{ pb: 2 }}>
+        <Typography
+          sx={{
+            fontSize: {
+              xs: "1.5rem",
+              sm: "1.25rem",
+              md: "1.125rem",
+              lg: "1rem",
+            },
+            color: "text.secondary",
+          }}
+        >
           Are you sure you want to purchase{" "}
-          <Box component="span" sx={{ fontWeight: 600 }}>
+          <Box component="span" sx={{ fontWeight: 600, color: "text.primary" }}>
             {productTitle}
           </Box>{" "}
           for{" "}
-          <Box component="span" sx={{ fontWeight: 600 }}>
+          <Box component="span" sx={{ fontWeight: 600, color: "text.primary" }}>
             ${price.toFixed(2)}
           </Box>
           ?
@@ -57,34 +85,51 @@ const ConfirmationModal = ({
 
       <DialogActions
         sx={{
-          px: 2,
-          pb: 2,
-          justifyContent: "space-between",
+          display: "flex",
+          flexDirection: isMobile ? "column" : "row",
+          gap: isMobile ? 3 : 1.5,
+          mt: "auto",
+          pt: 2,
+          px: 0,
         }}
       >
         <Button
           onClick={onClose}
+          variant="outlined"
+          fullWidth
           sx={{
-            fontWeight: 500,
+            fontWeight: 700,
+            borderRadius: 999,
+            px: 4,
+            py: 1.25,
+            fontSize: "0.875rem",
             textTransform: "uppercase",
             color: "text.primary",
+            borderColor: "text.primary",
+            "&:hover": {
+              backgroundColor: "rgba(0,0,0,0.04)",
+            },
           }}
         >
           Cancel
         </Button>
+
         <Button
           onClick={onConfirm}
           variant="contained"
+          fullWidth
           sx={{
-            backgroundColor: "primary.main",
-            fontWeight: 600,
+            fontWeight: 700,
+            borderRadius: 999,
+            px: 4,
+            py: 1.25,
+            fontSize: "0.875rem",
             textTransform: "uppercase",
-            px: 2,
-            py: 1,
-            borderRadius: 2,
-            boxShadow: "0px 2px 6px rgba(0, 0, 0, 0.1)",
+            backgroundColor: "#FF6A33",
+            color: "#fff",
+            boxShadow: "0px 3px 8px rgba(0,0,0,0.15)",
             "&:hover": {
-              backgroundColor: "primary.dark",
+              backgroundColor: "#e55a28",
             },
           }}
         >

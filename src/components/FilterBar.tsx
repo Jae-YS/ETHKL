@@ -40,13 +40,17 @@ const FilterBar: React.FC<Props> = ({ onApply }) => {
     <Box
       sx={{
         display: "flex",
+        flexDirection: { xs: "column", sm: "row" },
         flexWrap: "wrap",
-        alignItems: "center",
+        alignItems: { sm: "center" },
         gap: 2,
         mb: 4,
       }}
     >
-      <FormControl size="small" sx={{ minWidth: 180 }}>
+      <FormControl
+        size="small"
+        sx={{ minWidth: { xs: "100%", sm: 180 }, borderRadius: 2 }}
+      >
         <InputLabel>Sort By</InputLabel>
         <Select
           value={sortBy}
@@ -54,7 +58,6 @@ const FilterBar: React.FC<Props> = ({ onApply }) => {
           onChange={(e: SelectChangeEvent) =>
             setSortBy(e.target.value as ProductFilterState["sortBy"])
           }
-          sx={{ borderRadius: 2 }}
         >
           <MenuItem value="date-desc">Newest</MenuItem>
           <MenuItem value="date-asc">Oldest</MenuItem>
@@ -71,7 +74,7 @@ const FilterBar: React.FC<Props> = ({ onApply }) => {
         type="number"
         value={minPrice ?? ""}
         onChange={(e) => setMinPrice(Number(e.target.value))}
-        sx={{ borderRadius: 2, minWidth: 140 }}
+        sx={{ minWidth: { xs: "100%", sm: 140 }, borderRadius: 2 }}
       />
 
       <TextField
@@ -80,39 +83,50 @@ const FilterBar: React.FC<Props> = ({ onApply }) => {
         type="number"
         value={maxPrice ?? ""}
         onChange={(e) => setMaxPrice(Number(e.target.value))}
-        sx={{ borderRadius: 2, minWidth: 140 }}
+        sx={{ minWidth: { xs: "100%", sm: 140 }, borderRadius: 2 }}
       />
 
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={handleApply}
+      <Box
         sx={{
-          height: 40,
-          px: 4,
-          borderRadius: 2,
-          boxShadow: "0px 2px 6px rgba(0, 0, 0, 0.1)",
-          fontWeight: 600,
-          letterSpacing: "0.05em",
+          display: "flex",
+          flexDirection: { xs: "column", sm: "row" },
+          gap: 1.5,
+          width: { xs: "100%", sm: "auto" },
         }}
       >
-        APPLY
-      </Button>
-      <Button
-        variant="outlined"
-        color="primary"
-        sx={{
-          height: 40,
-          px: 4,
-          borderRadius: 2,
-          boxShadow: "0px 2px 6px rgba(0, 0, 0, 0.1)",
-          fontWeight: 600,
-          letterSpacing: "0.05em",
-        }}
-        onClick={handleResetFilters}
-      >
-        RESET
-      </Button>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={handleApply}
+          fullWidth
+          sx={{
+            height: 40,
+            px: 4,
+            borderRadius: 2,
+            fontWeight: 600,
+            letterSpacing: "0.05em",
+            boxShadow: "0px 2px 6px rgba(0, 0, 0, 0.1)",
+          }}
+        >
+          APPLY
+        </Button>
+        <Button
+          variant="outlined"
+          color="primary"
+          fullWidth
+          onClick={handleResetFilters}
+          sx={{
+            height: 40,
+            px: 4,
+            borderRadius: 2,
+            fontWeight: 600,
+            letterSpacing: "0.05em",
+            boxShadow: "0px 2px 6px rgba(0, 0, 0, 0.1)",
+          }}
+        >
+          RESET
+        </Button>
+      </Box>
     </Box>
   );
 };

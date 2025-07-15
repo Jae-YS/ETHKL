@@ -56,101 +56,139 @@ const CartPage = () => {
         sx={{
           minHeight: "100vh",
           bgcolor: "background.default",
-          px: 3,
+          px: { xs: 1.5, sm: 3, md: 4 },
           py: 4,
+          width: "100%",
+          maxWidth: "100%",
         }}
       >
         <Box
           sx={{
             display: "flex",
             flexDirection: { xs: "column", md: "row" },
-            gap: 6,
+            gap: { xs: 4, md: 6 },
             alignItems: "flex-start",
           }}
         >
           <Box sx={{ flex: 1 }}>
             <Typography variant="h5" sx={{ mb: 2 }}>
-              My cart
+              My Cart
             </Typography>
             <Divider sx={{ mb: 3 }} />
 
             <Stack spacing={3}>
               {items.map((item: Product) => (
-                <Box key={item.id}>
-                  <Box display="flex" gap={2} alignItems="center">
+                <Box key={item.id} sx={{ width: "100%" }}>
+                  <Box
+                    display="flex"
+                    gap={2}
+                    sx={{
+                      width: "100%",
+                      alignItems: "flex-start",
+                    }}
+                  >
                     <Box
                       component="img"
                       src={item.images?.[0]}
                       alt={item.title}
                       sx={{
-                        width: 80,
-                        height: 80,
+                        width: 100,
+                        height: 100,
                         objectFit: "cover",
                         borderRadius: 1,
+                        flexShrink: 0,
                       }}
                     />
-                    <Box flex={1}>
-                      <Typography fontWeight={500}>{item.title}</Typography>
+
+                    <Box
+                      sx={{
+                        display: "flex",
+                        flexDirection: "column",
+                        flexGrow: 1,
+                        minWidth: 0,
+                      }}
+                    >
+                      <Box
+                        display="flex"
+                        justifyContent="space-between"
+                        alignItems="flex-start"
+                        gap={1}
+                      >
+                        <Typography
+                          fontWeight={500}
+                          fontSize="0.95rem"
+                          sx={{ flexGrow: 1 }}
+                        >
+                          {item.title}
+                        </Typography>
+                        <IconButton
+                          onClick={() =>
+                            dispatch(
+                              removeFromCart({
+                                productId: item.id,
+                                email: userEmail ?? "",
+                              })
+                            )
+                          }
+                          sx={{ p: 0.5, color: "text.secondary" }}
+                        >
+                          <DeleteIcon fontSize="small" />
+                        </IconButton>
+                      </Box>
+
                       <Typography variant="body2" mt={0.5}>
                         ${item.price.toFixed(2)}
                       </Typography>
-                    </Box>
 
-                    <Box
-                      display="flex"
-                      alignItems="center"
-                      border="1px solid"
-                      borderColor="grey.400"
-                      borderRadius={1}
-                    >
-                      <IconButton
-                        size="small"
-                        onClick={() =>
-                          dispatch(
-                            decrementQuantity({
-                              productId: item.id,
-                              email: userEmail ?? "",
-                            })
-                          )
-                        }
-                        disabled={item.quantity <= 1}
+                      <Box
+                        display="flex"
+                        alignItems="center"
+                        mt={1}
+                        border="1px solid"
+                        borderColor="grey.400"
+                        borderRadius={1}
+                        width="fit-content"
                       >
-                        <RemoveIcon fontSize="inherit" />
-                      </IconButton>
-                      <Typography px={1}>{item.quantity}</Typography>
-                      <IconButton
-                        size="small"
-                        onClick={() =>
-                          dispatch(
-                            incrementQuantity({
-                              productId: item.id,
-                              email: userEmail ?? "",
-                            })
-                          )
-                        }
-                      >
-                        <AddIcon fontSize="inherit" />
-                      </IconButton>
+                        <IconButton
+                          size="small"
+                          onClick={() =>
+                            dispatch(
+                              decrementQuantity({
+                                productId: item.id,
+                                email: userEmail ?? "",
+                              })
+                            )
+                          }
+                          disabled={item.quantity <= 1}
+                          sx={{ p: 0.5 }}
+                        >
+                          <RemoveIcon fontSize="inherit" />
+                        </IconButton>
+                        <Typography px={1.5} fontSize="0.875rem">
+                          {item.quantity}
+                        </Typography>
+                        <IconButton
+                          size="small"
+                          onClick={() =>
+                            dispatch(
+                              incrementQuantity({
+                                productId: item.id,
+                                email: userEmail ?? "",
+                              })
+                            )
+                          }
+                          sx={{ p: 0.5 }}
+                        >
+                          <AddIcon fontSize="inherit" />
+                        </IconButton>
+                      </Box>
+
+                      <Typography fontWeight={600} mt={1}>
+                        ${(item.price * item.quantity).toFixed(2)}
+                      </Typography>
                     </Box>
-
-                    <Typography width={70} textAlign="right">
-                      ${item.price.toFixed(2)}
-                    </Typography>
-
-                    <IconButton
-                      onClick={() =>
-                        dispatch(
-                          removeFromCart({
-                            productId: item.id,
-                            email: userEmail ?? "",
-                          })
-                        )
-                      }
-                      sx={{ color: "text.secondary" }}
-                    >
-                      <DeleteIcon />
-                    </IconButton>
                   </Box>
+
                   <Divider sx={{ mt: 2 }} />
                 </Box>
               ))}
@@ -159,19 +197,26 @@ const CartPage = () => {
 
           <Box
             sx={{
-              width: { xs: "100%", md: 300 },
-              minWidth: 280,
+              width: "100%",
+              maxWidth: { xs: "100%", md: 300 },
               flexShrink: 0,
-              position: "sticky",
-              top: 100,
+              mt: { xs: 4, md: 0 },
+              position: { md: "sticky" },
+              top: { md: 100 },
             }}
           >
             <Typography variant="h6" mb={2}>
-              Order summary
+              Order Summary
             </Typography>
             <Divider />
 
-            <Box display="flex" justifyContent="space-between" my={2}>
+            <Box
+              display="flex"
+              justifyContent="space-between"
+              my={2}
+              flexWrap="wrap"
+              rowGap={1}
+            >
               <Typography>Subtotal</Typography>
               <Typography>${subtotal.toFixed(2)}</Typography>
             </Box>
@@ -182,7 +227,13 @@ const CartPage = () => {
 
             <Divider sx={{ my: 2 }} />
 
-            <Box display="flex" justifyContent="space-between" mb={2}>
+            <Box
+              display="flex"
+              justifyContent="space-between"
+              mb={2}
+              flexWrap="wrap"
+              rowGap={1}
+            >
               <Typography fontWeight={500}>Total</Typography>
               <Typography fontWeight={500}>${subtotal.toFixed(2)}</Typography>
             </Box>
@@ -194,6 +245,9 @@ const CartPage = () => {
               sx={{
                 backgroundColor: "#A85E3B",
                 color: "#fff",
+                py: 1.5,
+                fontSize: { xs: "0.95rem", sm: "1rem" },
+                borderRadius: 2,
                 "&:hover": { backgroundColor: "#914D2F" },
               }}
             >
