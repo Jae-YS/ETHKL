@@ -83,7 +83,6 @@ Then visit: [http://localhost:5173](http://localhost:5173)
 
 ```bash
 src/
-├── app/                # Redux store
 ├── components/         # UI components (Navbar, CartDrawer, etc.)
 ├── context/            # UI & Auth context (e.g. useUIContext)
 ├── features/           # Redux slices (cart)
@@ -100,15 +99,3 @@ src/
 - All cart logic is scoped per user via `sessionStorage["cart:<email>"]`
 - Platzi Fake Store API is used only for products/categories; no real transactions occur
 - This project is educational and not production-ready
-
----
-
-## License
-
-This project is open-source and available under the [MIT License](LICENSE).
-
----
-
-## 👨 Author
-
-Built by [Jae Young Seo](https://github.com/Jae-YS)
