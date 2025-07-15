@@ -24,7 +24,7 @@ import { STATIC_CATEGORIES } from "../constants/Categories";
 import { type RootState } from "../store";
 import NavLinkButton from "./NavLinkButton";
 
-const NavBarDrawer: React.FC = () => {
+const NavbarDrawer: React.FC = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const dispatch = useDispatch();
   const { loginWithRedirect, logout, isAuthenticated, user } = useAuth0();
@@ -153,4 +153,4 @@ const NavBarDrawer: React.FC = () => {
   );
 };
 
-export default NavBarDrawer;
+export default NavbarDrawer;

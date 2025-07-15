@@ -19,7 +19,7 @@ import { clearCart } from "../redux/cartSlice";
 import { removeFromSessionStorage } from "../utils/sessionStorage";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
-import NavBarDrawer from "./NavBarDrawer";
+import NavbarDrawer from "./NavbarDrawer";
 import React from "react";
 
 type NavbarProps = {
@@ -93,7 +93,7 @@ const Navbar: React.FC<NavbarProps> = ({ onCartClick }) => {
             </Typography>
 
             {isMobile ? (
-              <NavBarDrawer />
+              <NavbarDrawer />
             ) : (
               <>
                 <Box
