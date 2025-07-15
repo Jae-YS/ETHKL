@@ -1,69 +1,114 @@
-# React + TypeScript + Vite
+# Lunava — Advanced React E-Commerce App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Welcome to **Lunava**, a modern, responsive, and dynamic e-commerce web application built with **React**, **Redux Toolkit**, **React Query**, and **Auth0**. It simulates an end-to-end shopping experience using the [Platzi Fake Store API](https://fakeapi.platzi.com/en).
 
-Currently, two official plugins are available:
+![Lunava Preview](./screenshot/lunava.png)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## Expanding the ESLint configuration
+## Features
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- **Authentication** with Auth0
+- **Cart Management** using Redux Toolkit
+- **Data Fetching** via React Query
+- **Category Filtering** (dynamic via API)
+- **Per-user cart persistence** using `sessionStorage`
+- **Quantity adjustments**, subtotal & total calculations
+- **Checkout flow** with confirmation and feedback
+- Responsive design with Material UI
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+---
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+## Tech Stack
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+- **React 18**
+- **Redux Toolkit**
+- **React Query**
+- **Material UI**
+- **React Router**
+- **Auth0**
+- **React Toastify**
+- **Platzi Fake Store API**
+
+---
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js v16+ and npm
+- Auth0 account (for authentication)
+
+### Installation
+
+```bash
+git clone https://github.com/Jae-YS/Lunava
+cd lunava-ecommerce
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### Set up Auth0
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+Create a `.env` file at the root and add:
 
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```env
+VITE_AUTH0_DOMAIN=your-auth0-domain
+VITE_AUTH0_CLIENT_ID=your-auth0-client-id
 ```
+
+---
+
+### ▶ Run the App
+
+```bash
+npm run dev
+```
+
+Then visit: [http://localhost:5173](http://localhost:5173)
+
+---
+
+## Usage
+
+1. **Login / Register** via Auth0
+2. Browse all products or filter by category
+3. Add items to your cart from the product list or detail view
+4. Update item quantities directly in the cart
+5. Checkout via confirmation dialog
+6. Cart state is saved per user in `sessionStorage`
+
+---
+
+## Project Structure
+
+```bash
+src/
+├── app/                # Redux store
+├── components/         # UI components (Navbar, CartDrawer, etc.)
+├── context/            # UI & Auth context (e.g. useUIContext)
+├── features/           # Redux slices (cart)
+├── hooks/              # React Query hooks
+├── pages/              # Route-based components (Home, Cart, ProductDetail)
+├── utils/              # sessionStorage utilities
+├── constants/          # Static category data
+```
+
+---
+
+## Notes
+
+- All cart logic is scoped per user via `sessionStorage["cart:<email>"]`
+- Platzi Fake Store API is used only for products/categories; no real transactions occur
+- This project is educational and not production-ready
+
+---
+
+## License
+
+This project is open-source and available under the [MIT License](LICENSE).
+
+---
+
+## 👨 Author
+
+Built by [Jae Young Seo](https://github.com/Jae-YS)
