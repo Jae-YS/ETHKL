@@ -9,8 +9,9 @@ export const useFilteredProducts = (
 ) => {
   return useMemo(() => {
     let result = [...products];
+
     if (category && category !== "All Products") {
-      result = result.filter((p) => String(p.category.name) === category);
+      result = result.filter((p) => p.category?.name === category);
     }
 
     if (
@@ -24,16 +25,33 @@ export const useFilteredProducts = (
       );
     }
 
-    if (filters?.sortBy === "date") {
-      result.sort(
-        (a, b) =>
-          new Date(b.creationAt).getTime() - new Date(a.creationAt).getTime()
-      );
-    } else if (filters?.sortBy === "price-asc") {
-      result.sort((a, b) => a.price - b.price);
-    } else if (filters?.sortBy === "price-desc") {
-      result.sort((a, b) => b.price - a.price);
+    switch (filters?.sortBy) {
+      case "date-desc":
+        result.sort(
+          (a, b) =>
+            new Date(b.creationAt).getTime() - new Date(a.creationAt).getTime()
+        );
+        break;
+      case "date-asc":
+        result.sort(
+          (a, b) =>
+            new Date(a.creationAt).getTime() - new Date(b.creationAt).getTime()
+        );
+        break;
+      case "price-asc":
+        result.sort((a, b) => a.price - b.price);
+        break;
+      case "price-desc":
+        result.sort((a, b) => b.price - a.price);
+        break;
+      case "name-asc":
+        result.sort((a, b) => a.title.localeCompare(b.title));
+        break;
+      case "name-desc":
+        result.sort((a, b) => b.title.localeCompare(a.title));
+        break;
     }
+
     return result;
   }, [products, category, filters]);
 };

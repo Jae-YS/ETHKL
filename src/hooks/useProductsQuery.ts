@@ -27,20 +27,17 @@ export default function useProductsQuery() {
     productQueries.length !== (categories?.length || 0) ||
     productQueries.some((q) => q.isLoading || q.isFetching);
 
-  // Flatten all available products
   const allProducts: Product[] = productQueries.flatMap((query) =>
     Array.isArray(query.data) ? query.data : []
   );
 
-  // Sort and remove the first 13 "scrap" items
   const cleanedProducts: Product[] = allProducts
     .sort(
       (a, b) =>
         new Date(b.creationAt).getTime() - new Date(a.creationAt).getTime()
     )
-    .slice(14);
+    .slice(18); // getting rid of incorrect products
 
-  // Rebuild the mapping from category ID to cleaned product list
   const productsByCategory: Record<number, Product[]> = (categories ?? []).reduce(
     (acc, cat) => {
       acc[cat.id] = cleanedProducts.filter(

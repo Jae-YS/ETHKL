@@ -1,11 +1,21 @@
 import { Box, Button, Typography, CardMedia } from "@mui/material";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import MainLayout from "../layout/MainLayout";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useFetchProductBySlug } from "../hooks/useFetchProductBySlug";
-import { useUIContext } from "../context/loader/useUIContext";
+import { useUIContext } from "../context/ui/useUIContext";
+import ConfirmModal from "../components/ConfirmationModal";
+import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
+import { addToCart } from "../redux/cartSlice";
+import { useAuth0 } from "@auth0/auth0-react";
 
 const ProductDetailPage = () => {
+  const [openConfirm, setOpenConfirm] = useState(false);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { user } = useAuth0();
+
   const productSlug = useParams<{ slug: string }>().slug ?? "";
   const { data: product, isLoading } = useFetchProductBySlug(productSlug);
   const { setIsAppLoading } = useUIContext();
@@ -21,6 +31,31 @@ const ProductDetailPage = () => {
   if (isLoading || !product) {
     return null;
   }
+
+  const formattedDate = new Date(product.creationAt).toLocaleDateString(
+    "en-US",
+    {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    }
+  );
+
+  const handleAddToCart = () => {
+    if (!user?.email) return;
+    dispatch(addToCart({ product, email: user.email }));
+    toast.success("Product added to cart!");
+  };
+
+  const handleBuyNow = () => {
+    setOpenConfirm(true);
+  };
+
+  const confirmPurchase = () => {
+    setOpenConfirm(false);
+    toast.success("Purchase successful!");
+    navigate("/home");
+  };
 
   return (
     <MainLayout>
@@ -50,12 +85,25 @@ const ProductDetailPage = () => {
             <Typography variant="h4" sx={{ fontWeight: 600 }}>
               {product.title}
             </Typography>
-            <Typography
-              variant="subtitle2"
-              sx={{ mt: 1, color: "text.secondary" }}
+
+            <Box
+              sx={{
+                mt: 1,
+                display: "flex",
+                flexDirection: "row",
+                gap: 2,
+                alignItems: "center",
+                color: "text.secondary",
+              }}
             >
-              {product.category.name}
-            </Typography>
+              <Typography variant="subtitle2" sx={{ mt: 1 }}>
+                {product.category.name}
+              </Typography>
+              <Typography variant="body2" sx={{ mt: 1 }}>
+                Created on: {formattedDate}
+              </Typography>
+            </Box>
+
             <Typography variant="h6" sx={{ mt: 2, color: "error.main" }}>
               ${product.price.toFixed(2)}
             </Typography>
@@ -68,6 +116,7 @@ const ProductDetailPage = () => {
             >
               <Button
                 variant="outlined"
+                onClick={handleAddToCart}
                 sx={{
                   borderColor: "primary.main",
                   color: "primary.main",
@@ -85,6 +134,7 @@ const ProductDetailPage = () => {
                     backgroundColor: "#914D2F",
                   },
                 }}
+                onClick={handleBuyNow}
               >
                 Buy Now
               </Button>
@@ -92,6 +142,13 @@ const ProductDetailPage = () => {
           </Box>
         </Box>
       </Box>
+      <ConfirmModal
+        open={openConfirm}
+        onClose={() => setOpenConfirm(false)}
+        onConfirm={confirmPurchase}
+        productTitle={product.title}
+        price={product.price}
+      />
     </MainLayout>
   );
 };

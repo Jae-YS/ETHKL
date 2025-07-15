@@ -1,5 +1,6 @@
 import React from "react";
 import { withAuthenticationRequired } from "@auth0/auth0-react";
+import { useLocation } from "react-router-dom";
 import DotLoader from "react-spinners/DotLoader";
 import { Box } from "@mui/material";
 
@@ -10,6 +11,7 @@ type AuthenticationGuardProps = {
 const AuthenticationGuard: React.FC<AuthenticationGuardProps> = ({
   component,
 }) => {
+  const location = useLocation();
   const Component = withAuthenticationRequired(component, {
     onRedirecting: () => (
       <Box
@@ -24,6 +26,7 @@ const AuthenticationGuard: React.FC<AuthenticationGuardProps> = ({
         <DotLoader size={80} color="#A85E3B" />
       </Box>
     ),
+    returnTo: location.pathname + location.search,
   });
 
   return <Component />;

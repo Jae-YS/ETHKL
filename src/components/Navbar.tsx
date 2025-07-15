@@ -13,13 +13,29 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { useAuth0 } from "@auth0/auth0-react";
 import NavLinkButton from "./NavLinkButton";
 import { STATIC_CATEGORIES } from "../constants/Categories";
+import { useSelector } from "react-redux";
+import { type RootState } from "../store";
+import { useDispatch } from "react-redux";
+import { clearCart } from "../redux/cartSlice";
+import { removeFromSessionStorage } from "../utils/sessionStorage";
 
-const Navbar = () => {
-  const { loginWithRedirect, logout, isAuthenticated } = useAuth0();
+type NavbarProps = {
+  onCartClick?: () => void;
+};
+
+const Navbar: React.FC<NavbarProps> = ({ onCartClick }) => {
+  const cartItemCount = useSelector((state: RootState) =>
+    state.cart.items.reduce(
+      (count: number, item: { quantity: number }) => count + item.quantity,
+      0
+    )
+  );
+  const { loginWithRedirect, logout, isAuthenticated, user } = useAuth0();
+  const dispatch = useDispatch();
 
   const handleLogin = async () => {
     await loginWithRedirect({
-      appState: { returnTo: "/shop" },
+      appState: { returnTo: "/home" },
       authorizationParams: { prompt: "login" },
     });
   };
@@ -65,7 +81,7 @@ const Navbar = () => {
             }}
           >
             <Link to="/" style={{ textDecoration: "none", color: "inherit" }}>
-              ETHKL
+              LUNAVA
             </Link>
           </Typography>
 
@@ -87,8 +103,8 @@ const Navbar = () => {
           </Box>
 
           <Box sx={{ display: "flex", alignItems: "center", gap: 1.5, ml: 2 }}>
-            <IconButton component={Link} to="/cart">
-              <Badge badgeContent={0} color="primary">
+            <IconButton onClick={onCartClick} aria-label="cart">
+              <Badge badgeContent={cartItemCount} color="primary">
                 <ShoppingCartIcon />
               </Badge>
             </IconButton>
@@ -98,7 +114,16 @@ const Navbar = () => {
                 <IconButton component={Link} to="/profile">
                   <AccountCircleIcon />
                 </IconButton>
-                <Button onClick={() => logout()} sx={{ textTransform: "none" }}>
+                <Button
+                  onClick={() => {
+                    if (user?.email) {
+                      removeFromSessionStorage(`cart:${user.email}`);
+                    }
+                    dispatch(clearCart());
+                    logout();
+                  }}
+                  sx={{ textTransform: "none" }}
+                >
                   Logout
                 </Button>
               </>

@@ -1,16 +1,15 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
-// import AuthenticationGuard from "./guards/AuthenticationGuard";
+import AuthenticationGuard from "./guards/AuthenticationGuard";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import LandingPage from "./pages/LandingPage";
-import CallbackPage from "./pages/CallBackPage";
-// import ProfilePage from "./pages/profile/ProfilePage";
 import NotFoundPage from "./pages/NotFoundPage";
-import { useUIContext } from "./context/loader/useUIContext";
+import { useUIContext } from "./context/ui/useUIContext";
 import { Box } from "@mui/material";
 import DotLoader from "react-spinners/DotLoader";
 import ProductsPage from "./pages/ProductPage";
+import CartPage from "./pages/CartPage";
 import ProductView from "./pages/ProductView";
 
 const GlobalLoaderOverlay = () => (
@@ -43,11 +42,16 @@ const App: React.FC = () => {
 
       <Routes>
         <Route path="/" element={<LandingPage />} />
-        <Route path="/callback" element={<CallbackPage />} />
         <Route path="/home" element={<ProductsPage />} />
         <Route path="/category/:id" element={<ProductsPage />} />
-        <Route path="/category/:categoryId/:slug" element={<ProductView />} />
-        {/* <Route path="/profile" element={<AuthenticationGuard component={ProfilePage} />} /> */}
+        <Route
+          path="/category/:categoryId/:slug"
+          element={<AuthenticationGuard component={ProductView} />}
+        />
+        <Route
+          path="/cart"
+          element={<AuthenticationGuard component={CartPage} />}
+        />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </>

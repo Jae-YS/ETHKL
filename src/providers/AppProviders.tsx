@@ -1,12 +1,9 @@
-import { AuthProvider } from "../context/auth/AuthProvider";
-import { UIProvider } from "../context/loader/UIProvider";
-// import { CartProvider } from "../context/cart/CartProvider";
+import { UIProvider } from "../context/ui/UIProvider";
+import { Provider } from "react-redux";
+import { store } from "../store";
 
 export const AppProviders = ({ children }: { children: React.ReactNode }) => (
-  <AuthProvider>
-    <UIProvider>
-      {/* <CartProvider>{children}</CartProvider> */}
-      {children}
-    </UIProvider>
-  </AuthProvider>
+  <UIProvider>
+    <Provider store={store}>{children}</Provider>
+  </UIProvider>
 );

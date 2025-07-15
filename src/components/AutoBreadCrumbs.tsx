@@ -26,7 +26,6 @@ const AutoBreadcrumbs = () => {
       separator=">"
       sx={{ my: 2, fontSize: "0.875rem", color: "text.secondary" }}
     >
-      {/* Always show Home */}
       {location.pathname !== "/home" && (
         <Link
           component={RouterLink}
@@ -39,13 +38,11 @@ const AutoBreadcrumbs = () => {
         </Link>
       )}
 
-      {/* Handle category and slug segments */}
       {pathnames.map((segment, index) => {
         if (segment.toLowerCase() === "category") return null;
         const to = "/" + pathnames.slice(0, index + 1).join("/");
         const isLast = index === pathnames.length - 1;
 
-        // e.g., /category/29/classic-red-baseball-cap
         const isCategoryId = pathnames[index - 1] === "category";
         const isProductSlug = pathnames.length > 2 && index === 2;
 

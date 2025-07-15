@@ -4,7 +4,7 @@ import MainLayout from "../layout/MainLayout";
 import useProductsQuery from "../hooks/useProductsQuery";
 import type { Product } from "../types/Product";
 import React, { useEffect, useRef, useState } from "react";
-import { useUIContext } from "../context/loader/useUIContext";
+import { useUIContext } from "../context/ui/useUIContext";
 import ProductCard from "../components/ProductCard";
 import FilterBar from "../components/FilterBar";
 import { STATIC_CATEGORIES } from "../constants/Categories";

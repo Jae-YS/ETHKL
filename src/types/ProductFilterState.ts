@@ -1,5 +1,5 @@
 export type ProductFilterState = {
   minPrice?: number;
   maxPrice?: number;
-  sortBy?: "date" | "price-asc" | "price-desc";
+  sortBy?: "date-desc" | "date-asc" | "name-asc" | "name-desc" | "price-asc" | "price-desc";
 };

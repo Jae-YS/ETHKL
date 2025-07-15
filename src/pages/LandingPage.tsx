@@ -19,15 +19,15 @@ const LandingPage: React.FC = () => {
         }}
       >
         <Typography variant="h2" sx={{ mb: 2, fontWeight: 700 }}>
-          Wear What Matters.
+          Discover Style with Purpose.
         </Typography>
 
         <Typography
           variant="h6"
           sx={{ mb: 4, maxWidth: "600px", color: "text.secondary" }}
         >
-          Curated pieces from independent makers. Thoughtful design. Ethical
-          choices. This is fashion with intention.
+          Thoughtfully crafted. Sustainably made. Curated by Lunava for those
+          who care what they wear.
         </Typography>
 
         <Button
@@ -47,7 +47,7 @@ const LandingPage: React.FC = () => {
             },
           }}
         >
-          Shop the Collection
+          Explore the Collection
         </Button>
       </Box>
     </LandingLayout>

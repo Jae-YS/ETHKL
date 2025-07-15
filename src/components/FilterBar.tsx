@@ -16,7 +16,8 @@ type Props = {
 };
 
 const FilterBar: React.FC<Props> = ({ onApply }) => {
-  const [sortBy, setSortBy] = useState<ProductFilterState["sortBy"]>("date");
+  const [sortBy, setSortBy] =
+    useState<ProductFilterState["sortBy"]>("date-desc");
   const [minPrice, setMinPrice] = useState<number | undefined>();
   const [maxPrice, setMaxPrice] = useState<number | undefined>();
 
@@ -25,11 +26,11 @@ const FilterBar: React.FC<Props> = ({ onApply }) => {
   };
 
   const handleResetFilters = () => {
-    setSortBy("date");
+    setSortBy("date-desc");
     setMinPrice(undefined);
     setMaxPrice(undefined);
     onApply({
-      sortBy: "date",
+      sortBy: "date-desc",
       minPrice: undefined,
       maxPrice: undefined,
     });
@@ -55,7 +56,10 @@ const FilterBar: React.FC<Props> = ({ onApply }) => {
           }
           sx={{ borderRadius: 2 }}
         >
-          <MenuItem value="date">Newest</MenuItem>
+          <MenuItem value="date-desc">Newest</MenuItem>
+          <MenuItem value="date-asc">Oldest</MenuItem>
+          <MenuItem value="name-asc">Name: A to Z</MenuItem>
+          <MenuItem value="name-desc">Name: Z to A</MenuItem>
           <MenuItem value="price-asc">Price: Low to High</MenuItem>
           <MenuItem value="price-desc">Price: High to Low</MenuItem>
         </Select>

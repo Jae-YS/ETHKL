@@ -12,13 +12,9 @@ const Auth0ProviderWithNavigate: React.FC<Auth0ProviderWithNavigateProps> = ({
   const navigate = useNavigate();
   const domain = import.meta.env.VITE_AUTH0_DOMAIN;
   const clientId = import.meta.env.VITE_AUTH0_CLIENT_ID;
-  const redirectUri = window.location.origin + "/callback";
+  const redirectUri = window.location.origin;
 
-  const onRedirectCallback = (appState: AppState | undefined) => {
-    navigate(appState?.returnTo || window.location.pathname);
-  };
-
-  if (!(domain && clientId && redirectUri)) return null;
+  if (!(domain && clientId)) return null;
 
   return (
     <Auth0Provider
@@ -28,7 +24,9 @@ const Auth0ProviderWithNavigate: React.FC<Auth0ProviderWithNavigateProps> = ({
         redirect_uri: redirectUri,
         scope: "openid profile email",
       }}
-      onRedirectCallback={onRedirectCallback}
+      onRedirectCallback={(appState: AppState | undefined) => {
+        navigate(appState?.returnTo || "/home", { replace: true });
+      }}
       cacheLocation="localstorage"
     >
       {children}
