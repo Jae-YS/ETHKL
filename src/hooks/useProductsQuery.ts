@@ -36,7 +36,7 @@ export default function useProductsQuery() {
       (a, b) =>
         new Date(b.creationAt).getTime() - new Date(a.creationAt).getTime()
     )
-    .slice(18); // getting rid of incorrect products
+    .slice(9) // getting rid of incorrect products
 
   const productsByCategory: Record<number, Product[]> = (categories ?? []).reduce(
     (acc, cat) => {
